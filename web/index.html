@@ -3,63 +3,52 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Go URL Shortener</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-      body {
-        font-family: "Inter", sans-serif;
-      }
-    </style>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap"
-      rel="stylesheet"
-    />
+    <title>Shortify</title>
+    <link rel="stylesheet" href="css/style.css" />
   </head>
-  <body class="bg-black flex items-center justify-center h-screen">
-    <div
-      class="bg-white p-8 rounded-lg shadow-xl w-full max-w-lg border border-gray-300"
-    >
-      <h1 class="text-3xl font-bold text-center text-black mb-2">
-        Go URL Shortener
-      </h1>
-      <p class="text-center text-gray-600 mb-6">
-        Enter a long URL to make it tiny.
-      </p>
+  <body>
+    <div class="container">
+      <!-- Header -->
+      <div class="header">
+        <h1 class="title">Shortify</h1>
+        <p class="subtitle">Shorten your URLs</p>
+      </div>
 
-      <!-- The form that sends data to our Go backend -->
-      <form id="url-form">
-        <div class="flex items-center gap-2">
-          <input
-            type="url"
-            name="url"
-            id="url-input"
-            placeholder="https://your-super-long-url.com/"
-            required
-            class="w-full px-4 py-3 border border-gray-400 rounded-md focus:outline-none focus:ring-2 focus:ring-black transition-shadow bg-white text-black"
-          />
-          <button
-            type="submit"
-            class="bg-black text-white font-semibold px-6 py-3 rounded-md hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black transition-colors"
-          >
-            Shorten
+      <!-- Form -->
+      <div class="form-container">
+        <form id="url-form">
+          <div class="form-group">
+            <input
+              type="url"
+              name="url"
+              id="url-input"
+              placeholder="Enter your URL here..."
+              required
+              class="url-input"
+            />
+          </div>
+          <button type="submit" class="submit-btn" id="submit-btn">
+            <span class="btn-text">Shorten</span>
+            <div class="loading" id="loading">
+              <div class="spinner"></div>
+              <span>Loading...</span>
+            </div>
           </button>
-        </div>
-      </form>
+        </form>
+      </div>
 
-      <!-- This is where we will display the result in Part 2 -->
-      <div
-        id="result"
-        class="mt-6 p-4 bg-gray-100 rounded-md text-center hidden border border-gray-300"
-      >
-        <p class="text-black">Your shortened URL is ready:</p>
-        <a
-          href="#"
-          id="short-url"
-          class="text-black font-medium text-lg underline"
-          target="_blank"
-        ></a>
+      <!-- Error Message -->
+      <div class="error" id="error">
+        <span id="error-message"></span>
+      </div>
+
+      <!-- Result -->
+      <div class="result" id="result">
+        <div class="result-title">Your shortened URL:</div>
+        <div class="short-url-container">
+          <a href="#" id="short-url" class="short-url" target="_blank"></a>
+          <button class="copy-btn" id="copy-btn">Copy</button>
+        </div>
       </div>
     </div>
 
