@@ -44,7 +44,7 @@ func NewMySqlStore(dataSourceName string) (*MySqlStore, error) {
 
 // inserts a url to the database
 func (s *MySqlStore) Save(ctx context.Context, url *models.URL) error {
-	query := "INSERT INTO urls (short_cord , long_url)VALUES (?,?)"
+	query := "INSERT INTO urls (short_code, long_url) VALUES (?, ?)"
 	_, err := s.DB.ExecContext(ctx, query, url.ShortCode, url.LongURL)
 	return err
 }
@@ -67,7 +67,7 @@ func (s *MySqlStore) Get(ctx context.Context, shortCode string) (*models.URL, er
 // checks if the shortcode already exists in the db or not
 func (s *MySqlStore) Exists(ctx context.Context, shortCode string) (bool, error) {
 	var exists bool
-	
+
 	query := "SELECT EXISTS(SELECT 1 FROM urls WHERE short_code = ?)"
 
 	err := s.DB.QueryRowContext(ctx, query, shortCode).Scan(&exists)

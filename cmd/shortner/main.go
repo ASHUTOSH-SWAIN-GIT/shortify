@@ -14,6 +14,7 @@ func main() {
 	mux := http.NewServeMux()
 
 	mux.HandleFunc("/api/shorten", internals.ShortenHandler)
+	mux.HandleFunc("/s/", internals.RedirectHandler)
 
 	fileserver := http.FileServer(http.Dir("./web/"))
 	mux.Handle("/", fileserver)

@@ -17,13 +17,13 @@ document.addEventListener('DOMContentLoaded', function() {
       });
 
       if (response.ok) {
-        const shortUrl = await response.text(); // In future, this will be the short URL
-        console.log("Response from server:", shortUrl);
+        const data = await response.json(); // Parse JSON response
+        console.log("Response from server:", data);
 
-        // For now, we just show a message. In Part 2, we will display the link.
+        // Display the shortened URL
         resultDiv.classList.remove("hidden");
-        shortUrlLink.textContent = "Successfully sent to server!";
-        shortUrlLink.href = "#";
+        shortUrlLink.textContent = data.short_url;
+        shortUrlLink.href = data.short_url;
       } else {
         alert("Failed to shorten URL. Server returned an error.");
       }
