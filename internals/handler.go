@@ -29,7 +29,7 @@ func ShortenHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Database connection
-	dataSourceName := "root:your_new_password@tcp(localhost:3306)/url_shortner?parseTime=true"
+	dataSourceName := "root:shortify@tcp(localhost:3306)/url_shortener?parseTime=true"
 	fmt.Printf("Attempting to connect to database with: %s\n", dataSourceName)
 
 	store, err := db.NewMySqlStore(dataSourceName)
@@ -106,7 +106,7 @@ func RedirectHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Database connection
-	dataSourceName := "root:your_new_password@tcp(localhost:3306)/url_shortner?parseTime=true"
+	dataSourceName := "root:shortify@tcp(localhost:3306)/url_shortener?parseTime=true"
 	store, err := db.NewMySqlStore(dataSourceName)
 	if err != nil {
 		http.Error(w, "Database connection failed", http.StatusInternalServerError)
