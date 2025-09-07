@@ -1,3 +1,5 @@
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/c91d5843-d9b7-4a32-aacc-e1caced18d15" />
+
 # Shortify - URL Shortener
 
 A modern, fast, and lightweight URL shortener built with Go and a sleek dark-themed web interface. Transform long URLs into short, memorable links with ease.
