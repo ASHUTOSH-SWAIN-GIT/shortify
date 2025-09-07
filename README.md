@@ -1,58 +1,113 @@
 # Shortify - URL Shortener
 
-A simple and fast URL shortener built with Go, MySQL, and a modern web interface.
+A modern, fast, and lightweight URL shortener built with Go and a sleek dark-themed web interface. Transform long URLs into short, memorable links with ease.
 
 ## Features
 
-- Shorten long URLs to short codes
-- Redirect short codes to original URLs
-- Dark theme UI with black and white design
-- MySQL database for persistence
-- Docker containerization for easy deployment
+- **URL Shortening**: Convert long URLs into short, shareable codes
+- **Smart Redirects**: Seamlessly redirect short codes to original URLs
+- **Modern UI**: Beautiful dark theme with black and white design
+- **Database Persistence**: Store URLs with MySQL/PostgreSQL support
+- **RESTful API**: Clean API endpoints for integration
+- **Responsive Design**: Works perfectly on desktop and mobile
+- **Fast Performance**: Built with Go for high-speed operations
 
-## Quick Start with Docker
+## Project Structure
 
-1. **Clone and navigate to the project:**
+```
+shortify/
+├── cmd/shortner/          # Main application entry point
+├── internals/             # Core application logic
+│   ├── handler.go         # HTTP request handlers
+│   ├── shortner.go        # URL shortening logic
+│   └── db/                # Database layer
+│       ├── mysql.go       # MySQL database operations
+│       └── models/        # Data models
+├── web/                   # Frontend assets
+│   ├── index.html         # Main web interface
+│   └── js/                # JavaScript files
+│       └── main.js        # Frontend logic
+└── README.md              # This file
+```
+
+## Quick Start
+
+### Prerequisites
+
+- Go 1.24+ installed
+- MySQL or PostgreSQL database
+- Git
+
+### Local Development
+
+1. **Clone the repository:**
 
    ```bash
-   git clone <your-repo>
+   git clone https://github.com/yourusername/shortify.git
    cd shortify
    ```
 
-2. **Start the application:**
-
-   ```bash
-   docker-compose up -d
-   ```
-
-3. **Access the application:**
-   - Web UI: http://localhost:8080
-   - API: http://localhost:8080/api/shorten
-
-## Manual Setup
-
-1. **Install dependencies:**
+2. **Install dependencies:**
 
    ```bash
    go mod download
    ```
 
-2. **Set up MySQL database:**
+3. **Set up your database:**
 
-   - Create database: `shortify`
-   - Run the SQL from `init.sql` to create tables
+   - Create a database named `shortify`
+   - Run the SQL schema (see Database Setup section)
 
-3. **Configure environment variables:**
+4. **Configure environment variables:**
 
    ```bash
-   cp env.example .env
-   # Edit .env with your database credentials
+   # Create .env file with your database credentials
+   DB_HOST=localhost
+   DB_PORT=3306
+   DB_USER=your_username
+   DB_PASSWORD=your_password
+   DB_NAME=shortify
+   PORT=8080
    ```
 
-4. **Run the application:**
+5. **Run the application:**
+
    ```bash
    go run cmd/shortner/main.go
    ```
+
+6. **Access the application:**
+   - Web UI: http://localhost:8080
+   - API: http://localhost:8080/api/shorten
+
+## Database Setup
+
+### MySQL
+
+```sql
+CREATE DATABASE shortify;
+USE shortify;
+
+CREATE TABLE urls (
+    short_code VARCHAR(10) PRIMARY KEY,
+    long_url TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+### PostgreSQL
+
+```sql
+CREATE DATABASE shortify;
+
+\c shortify;
+
+CREATE TABLE urls (
+    short_code VARCHAR(10) PRIMARY KEY,
+    long_url TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
 
 ## API Usage
 
@@ -63,63 +118,65 @@ curl -X POST http://localhost:8080/api/shorten \
   -d "url=https://example.com/very/long/url"
 ```
 
+**Response:**
+
+```json
+{
+  "short_code": "abc123",
+  "short_url": "http://localhost:8080/s/abc123",
+  "long_url": "https://example.com/very/long/url"
+}
+```
+
 ### Redirect
 
 Visit: `http://localhost:8080/s/{short_code}`
 
-## Deployment Options
+The application will automatically redirect you to the original URL.
 
-### Docker (Recommended)
+### API Endpoints
 
-```bash
-docker-compose up -d
-```
-
-### Cloud Deployment
-
-- **Heroku**: Use the included Dockerfile
-- **AWS/GCP/Azure**: Deploy using Docker containers
-- **VPS**: Use docker-compose for easy setup
+| Method | Endpoint       | Description              |
+| ------ | -------------- | ------------------------ |
+| `POST` | `/api/shorten` | Shorten a long URL       |
+| `GET`  | `/s/{code}`    | Redirect to original URL |
+| `GET`  | `/`            | Web interface            |
 
 ## Environment Variables
 
-| Variable    | Default     | Description         |
-| ----------- | ----------- | ------------------- |
-| DB_HOST     | localhost   | MySQL host          |
-| DB_PORT     | 3306        | MySQL port          |
-| DB_USER     | shortify    | MySQL username      |
-| DB_PASSWORD | shortify123 | MySQL password      |
-| DB_NAME     | shortify    | MySQL database name |
-| PORT        | 8080        | Server port         |
-
-## Production Considerations
-
-1. **Security:**
-
-   - Change default database passwords
-   - Use environment variables for sensitive data
-   - Enable HTTPS in production
-
-2. **Performance:**
-
-   - Configure MySQL connection pooling
-   - Add caching layer (Redis) for high traffic
-   - Use CDN for static assets
-
-3. **Monitoring:**
-   - Add health check endpoints
-   - Set up logging and monitoring
-   - Configure backup strategies
+| Variable      | Default     | Description       |
+| ------------- | ----------- | ----------------- |
+| `DB_HOST`     | localhost   | Database host     |
+| `DB_PORT`     | 3306        | Database port     |
+| `DB_USER`     | shortify    | Database username |
+| `DB_PASSWORD` | shortify123 | Database password |
+| `DB_NAME`     | shortify    | Database name     |
+| `PORT`        | 8080        | Server port       |
 
 ## Development
 
+### Prerequisites
+
+- Go 1.24+
+- MySQL or PostgreSQL
+- Git
+
+### Running Tests
+
 ```bash
-# Run tests
 go test ./...
+```
 
-# Build binary
+### Building Binary
+
+```bash
 go build -o shortify ./cmd/shortner
+```
 
-# Run with hot reload (install air first)
+### Hot Reload (Optional)
+
+```bash
+# Install air for hot reloading
+go install github.com/cosmtrek/air@latest
 air
 ```
